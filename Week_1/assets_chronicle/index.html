@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CHRONICLE — Wear The Unknown</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-yH3+..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    /* CSS Variables (Dark theme) */
+    :root{
+      --bg:#080808;
+      --bg-2:#111111;
+      --surface:#171717;
+      --text:#E8E3D8;
+      --muted:#9A9A9A;
+      --metal:#A8A8A0;
+      --burgundy:#4A111A;
+      --glass: rgba(255,255,255,0.03);
+      --radius:18px;
+      --transition: 280ms cubic-bezier(.22,.9,.28,1);
+      --max-width:1180px;
+      --ff-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      --ff-serif: 'Playfair Display', serif;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--ff-sans);
+      background:linear-gradient(180deg,var(--bg) 0%, #050505 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .wrap{width:min(var(--max-width),calc(100% - 2rem));margin:0 auto}
+
+    /* Navbar */
+    header.navbar{
+      position:fixed;left:0;right:0;top:0;z-index:80;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      padding:1rem 1.25rem;background:transparent;transition:background var(--transition),backdrop-filter var(--transition),padding var(--transition);
+    }
+
+    .navbar.scrolled{background:linear-gradient(180deg, rgba(8,8,8,0.7), rgba(8,8,8,0.6));backdrop-filter:blur(6px);padding:0.6rem 1rem}
+
+    .brand{font-family:var(--ff-serif);letter-spacing:0.26em;font-weight:700;font-size:1.05rem}
+
+    nav.main{display:flex;gap:1.1rem;align-items:center}
+    nav.main a{font-size:0.92rem;color:var(--muted);padding:0.45rem 0.6rem;border-radius:8px}
+    nav.main a:hover{color:var(--text)}
+
+    .icons{display:flex;gap:0.8rem;align-items:center}
+    .icon-btn{background:var(--glass);padding:0.5rem;border-radius:10px;border:1px solid rgba(255,255,255,0.03);display:inline-grid;place-items:center}
+
+    /* Mobile menu */
+    .hamburger{display:none}
+
+    /* HERO */
+    .hero{min-height:100vh;display:grid;align-items:center;gap:2rem;position:relative;padding:5rem 0}
+    .hero-inner{display:grid;grid-template-columns:1fr 520px;gap:2rem;align-items:center}
+
+    /* Background vignette, pillars, marble texture (CSS art) */
+    .hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+    .marble{position:absolute;inset:-20% -10% -10% -10%;background-image:radial-gradient(circle at 10% 10%, rgba(255,255,255,0.02), transparent 5%), linear-gradient(180deg, rgba(255,255,255,0.01), transparent 50%), url('assets/chronicle-marble.jpg');background-size:cover;opacity:0.06;filter:grayscale(30%)}
+    .pillars::before,.pillars::after{content:'';position:absolute;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.2));width:18%;height:140%;left:4%;top:-15%;transform:skewX(-6deg);opacity:0.14}
+    .pillars::after{left:auto;right:4%;transform:skewX(6deg);opacity:0.12}
+
+    .hero-visual{height:70vh;border-radius:24px;background:linear-gradient(180deg, rgba(20,20,20,0.9), rgba(12,12,12,0.75));box-shadow:0 30px 80px rgba(2,2,2,0.6);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+
+    .hero-visual .spot{position:absolute;right:-10%;top:-10%;width:50%;height:60%;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06), transparent 20%), linear-gradient(180deg, rgba(74,17,26,0.04), transparent 30%);mix-blend-mode:screen}
+
+    .hero-copy{padding:1rem 0}
+    .logo{height:46px;display:block}
+    @media (max-width:560px){.logo{height:34px}}
+    h1.site-title{font-family:var(--ff-serif);font-size:clamp(3rem,6vw,5rem);line-height:0.92;letter-spacing:0.02em;margin:0 0 0.6rem}
+    p.tagline{font-weight:700;color:var(--burgundy);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:0.9rem}
+    p.lead{max-width:60ch;color:var(--muted);font-size:1.03rem}
+
+    .hero-ctas{display:flex;gap:0.9rem;margin-top:1.5rem}
+    .btn-primary{background:linear-gradient(90deg,var(--metal),#9b9b93);color:#080808;padding:0.9rem 1.2rem;border-radius:999px;font-weight:700;border:1px solid rgba(255,255,255,0.04);cursor:pointer}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:0.9rem 1.2rem;border-radius:999px}
+
+    /* subtle particles */
+    .particles{position:absolute;inset:0;pointer-events:none}
+    .particle{position:absolute;width:2px;height:2px;background:rgba(255,255,255,0.07);filter:blur(.5px);opacity:0.9}
+
+    /* Intro editorial */
+    .intro{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center;padding:4rem 0}
+    .intro h2{font-family:var(--ff-serif);font-size:1.8rem;margin-bottom:0.6rem}
+    .intro p{color:var(--muted);line-height:1.6}
+    .symbol{font-size:2.6rem;color:var(--metal);opacity:0.9}
+    .intro-art{height:260px;border-radius:12px;background-image:url('assets/chronicle-engraving.jpg');background-size:cover;background-position:center;filter:grayscale(40%) contrast(0.9);opacity:0.9;border:1px solid rgba(255,255,255,0.03)}
+
+    /* Featured collection grid */
+    .collection{padding:3rem 0}
+    .collection h2{font-family:var(--ff-serif);font-size:1.6rem;margin-bottom:0.2rem}
+    .collection p.sub{color:var(--muted);margin-bottom:1.2rem}
+    .products{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.035);padding:1rem;border-radius:14px;overflow:hidden;position:relative}
+    .card .img{height:260px;background:#0b0b0b;border-radius:10px;overflow:hidden;display:grid;place-items:center}
+    .card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--transition)}
+    .card:hover img{transform:scale(1.06)}
+    .card .meta{padding:0.9rem}
+    .card h3{margin:0 0 0.35rem;font-size:1.05rem}
+    .card p{color:var(--muted);font-size:0.93rem;margin:0 0 0.6rem}
+    .card .actions{display:flex;gap:0.5rem;align-items:center}
+    .view-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:0.55rem 0.8rem;border-radius:10px;color:var(--text);cursor:pointer}
+    .add-btn{background:var(--burgundy);border:none;color:var(--text);padding:0.55rem 0.9rem;border-radius:10px;cursor:pointer}
+
+    /* Story section */
+    .story{padding:3rem 0;border-top:1px solid rgba(255,255,255,0.02)}
+    .story h2{font-family:var(--ff-serif);font-size:1.5rem;margin-bottom:0.6rem}
+    .story .page{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);padding:1.6rem;border-radius:12px}
+    .decor{display:flex;gap:0.6rem;align-items:center;color:var(--muted);font-size:0.95rem}
+
+    /* Quote immersive */
+    .quote-full{min-height:60vh;display:grid;place-items:center;text-align:center;padding:3rem}
+    .quote-full h2{font-family:var(--ff-serif);font-size:2rem;line-height:1.05;letter-spacing:0.04em}
+
+    /* About & Newsletter */
+    .about{display:grid;grid-template-columns:1fr 1fr;gap:2rem;padding:3rem 0}
+    .newsletter{display:flex;gap:0.6rem}
+    .subscribe input{padding:0.9rem 1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
+    .subscribe button{padding:0.9rem 1.2rem;border-radius:12px;border:none;background:var(--metal);color:#080808;font-weight:700;cursor:pointer}
+
+    /* Testimonials, Features, Pricing, FAQ */
+    .features-list{display:flex;gap:1rem;flex-wrap:wrap}
+    .feature-item{background:var(--surface);padding:1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.02);flex:1;min-width:220px}
+    .pricing{display:flex;gap:1rem;margin-top:1rem}
+    .price-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .faq{margin-top:1rem}
+    .faq-item{padding:0.8rem;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:0.6rem}
+
+    footer{padding:2rem 0;border-top:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:1rem}
+    .footer-grid{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+    /* Responsive */
+    @media (max-width:1100px){.products{grid-template-columns:repeat(3,1fr)} .hero-inner{grid-template-columns:1fr 420px}}
+    @media (max-width:780px){.products{grid-template-columns:repeat(2,1fr)} .intro{grid-template-columns:1fr} .intro-art{height:200px}}
+    @media (max-width:560px){
+      .products{grid-template-columns:1fr}
+      nav.main{display:none}
+      .hamburger{display:inline-flex}
+      .hero-inner{grid-template-columns:1fr}
+      header.navbar{padding:0.6rem 1rem}
+      h1.site-title{font-size:2.4rem}
+      .intro{padding:2rem 0}
+      .about{grid-template-columns:1fr}
+    }
+
+    /* Accessibility: focus styles */
+    a:focus, button:focus{outline:3px solid rgba(168,168,160,0.12);outline-offset:2px}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      *{transition:none !important}
+    }
+
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <div class="brand"><img src="assets/chronicle-logo.png" alt="CHRONICLE logo" class="logo"></div>
+      </div>
+
+      <nav class="main" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#collection">Collection</a>
+        <a href="#story">Story</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="icons">
+        <button class="icon-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="icon-btn" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        <button class="icon-btn hamburger" id="menuToggle" aria-expanded="false" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <!-- HERO -->
+    <section class="hero" aria-label="Hero">
+      <div class="hero-bg">
+        <div class="marble"></div>
+        <div class="pillars"></div>
+        <div class="particles" aria-hidden="true"></div>
+      </div>
+
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="tagline">WEAR THE UNKNOWN.</p>
+          <h1 class="site-title">CHRONICLE</h1>
+          <p class="lead">Koleksi yang ditempa antara mitologi kuno, kisah terlupakan, dan kegelapan dunia modern. Setiap potong adalah fragmen dari sebuah cerita yang masih menunggu untuk diselesaikan.</p>
+
+          <div class="hero-ctas">
+            <button class="btn-primary" onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">EXPLORE COLLECTION</button>
+            <button class="btn-ghost" onclick="document.getElementById('story').scrollIntoView({behavior:'smooth'})">DISCOVER THE CHRONICLE</button>
+          </div>
+        </div>
+
+        <div class="hero-visual" role="img" aria-label="Ruangan gelap bergaya neoclassical dengan pilar marmer dan patung sebagian tertutup bayangan">
+          <div class="spot"></div>
+          <!-- Decorative visual placeholders: images should be in assets/ -->
+          <img src="assets/chronicle-hero.svg" alt="Latar ruangan neoclassical gelap" style="width:100%;height:100%;object-fit:cover;opacity:0.85;mix-blend-mode:multiply" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="intro wrap" id="intro">
+      <div>
+        <div class="symbol">✦</div>
+        <h2>EVERY PIECE HOLDS A STORY.</h2>
+        <p>CHRONICLE berdiri di antara yang dikenal dan yang terlupakan. Terinspirasi dari peradaban yang pudar, mitologi kuno, serta keindahan ketidaksempurnaan—setiap produk dibuat sebagai fragmen dari sebuah cerita yang menunggu untuk ditemukan.</p>
+      </div>
+      <div class="intro-art" aria-hidden="true"></div>
+    </section>
+
+    <!-- COLLECTION -->
+    <section class="collection wrap" id="collection">
+      <h2>THE CHRONICLE COLLECTION</h2>
+      <p class="sub">Five artifacts. One unfinished story.</p>
+
+      <div class="products" role="list">
+
+        <!-- Product 1: The Relic Tee -->
+        <article class="card" role="listitem" aria-labelledby="p1">
+          <div class="img">
+            <img src="assets/chronicle-collage.jpg" alt="The Relic Tee — oversized black t-shirt dengan motif ukiran neoklasik" loading="lazy" style="object-fit:cover;object-position:16% 25%;">
+          </div>
+          <div class="meta">
+            <h3 id="p1">The Relic Tee</h3>
+            <p>Oversized black T‑shirt, heavy cotton, distressed neoclassical engraving with subtle burgundy accents.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+              <div style="color:var(--muted);font-weight:700">Rp 399.000</div>
+              <div class="actions">
+                <button class="view-btn" onclick="openPreview(1)">VIEW PIECE</button>
+                <button class="add-btn" onclick="addToCart(1)"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 2: The Arcane Pendant -->
+        <article class="card" role="listitem" aria-labelledby="p2">
+          <div class="img">
+            <img src="assets/chronicle-collage.jpg" alt="The Arcane Pendant — kalung antique silver dengan simbol arcane" loading="lazy" style="object-fit:cover;object-position:50% 25%;">
+          </div>
+          <div class="meta">
+            <h3 id="p2">The Arcane Pendant</h3>
+            <p>Antique silver pendant, ornate geometry, subtle celestial motifs — an artifact recovered from a forgotten archive.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+              <div style="color:var(--muted);font-weight:700">Rp 579.000</div>
+              <div class="actions">
+                <button class="view-btn" onclick="openPreview(2)">VIEW PIECE</button>
+                <button class="add-btn" onclick="addToCart(2)"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 3: The Eternal Ring -->
+        <article class="card" role="listitem" aria-labelledby="p3">
+          <div class="img">
+            <img src="assets/chronicle-collage.jpg" alt="The Eternal Ring — cincin antique silver dengan batu hitam dan ukiran" loading="lazy" style="object-fit:cover;object-position:83% 25%;">
+          </div>
+          <div class="meta">
+            <h3 id="p3">The Eternal Ring</h3>
+            <p>Gothic neoclassical ring, engraved details and a subtle onyx inlay — relic of an ancient order.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+              <div style="color:var(--muted);font-weight:700">Rp 349.000</div>
+              <div class="actions">
+                <button class="view-btn" onclick="openPreview(3)">VIEW PIECE</button>
+                <button class="add-btn" onclick="addToCart(3)"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 4: The Fallen Trousers -->
+        <article class="card" role="listitem" aria-labelledby="p4">
+          <div class="img">
+            <img src="assets/chronicle-collage.jpg" alt="The Fallen Trousers — wide-leg trousers hitam dengan bordiran neoklasik" loading="lazy" style="object-fit:cover;object-position:50% 75%;">
+          </div>
+          <div class="meta">
+            <h3 id="p4">The Fallen Trousers</h3>
+            <p>Wide‑leg trousers in charcoal, heavy fabric with subtle neoclassical embroidery and utility details.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+              <div style="color:var(--muted);font-weight:700">Rp 549.000</div>
+              <div class="actions">
+                <button class="view-btn" onclick="openPreview(4)">VIEW PIECE</button>
+                <button class="add-btn" onclick="addToCart(4)"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 5: The Obscura Hoodie -->
+        <article class="card" role="listitem" aria-labelledby="p5">
+          <div class="img">
+            <img src="assets/chronicle-collage.jpg" alt="The Obscura Hoodie — oversized black hoodie dengan grafis patung" loading="lazy" style="object-fit:cover;object-position:83% 75%;">
+          </div>
+          <div class="meta">
+            <h3 id="p5">The Obscura Hoodie</h3>
+            <p>Oversized hoodie, heavy cotton, large back engraving and distressed print with dark burgundy accents.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+              <div style="color:var(--muted);font-weight:700">Rp 699.000</div>
+              <div class="actions">
+                <button class="view-btn" onclick="openPreview(5)">VIEW PIECE</button>
+                <button class="add-btn" onclick="addToCart(5)"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Features, Testimonials, Pricing, FAQ -->
+    <section class="wrap" style="padding:2rem 0">
+      <div style="display:flex;gap:2rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h3>Fitur Unggulan</h3>
+          <div class="features-list" aria-hidden="false">
+            <div class="feature-item"><i class="fa-solid fa-gem" style="color:var(--metal);margin-right:0.6rem"></i><strong>Arsitektur Neoklasik</strong><div style="color:var(--muted)">Motif klasik terpadu dengan streetwear modern.</div></div>
+            <div class="feature-item"><i class="fa-solid fa-moon" style="color:var(--burgundy);margin-right:0.6rem"></i><strong>Dark Fantasy</strong><div style="color:var(--muted)">Elemen mistis dan simbolik yang menyatu.</div></div>
+            <div class="feature-item"><i class="fa-solid fa-crown" style="color:var(--metal);margin-right:0.6rem"></i><strong>Premium Streetwear</strong><div style="color:var(--muted)">Bahan dan finishing yang terasa mewah.</div></div>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:320px">
+          <h3>Testimoni</h3>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:0.6rem">
+            <div class="price-card">"Desainnya seperti sakral — setiap detail punya cerita." — Dina, 21</div>
+            <div class="price-card">"Kualitas premium dan tetap terasa urban." — Raka, 24</div>
+            <div class="price-card">"Sempurna untuk event malam. Banyak yang bertanya soal mereknya." — Lia, 19</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:1.6rem;display:flex;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <h4>Daftar Harga</h4>
+          <div class="price-card">T‑Shirt: Rp 399.000</div>
+          <div class="price-card" style="margin-top:0.5rem">Accessory: Rp 349.000 — Rp 579.000</div>
+          <div class="price-card" style="margin-top:0.5rem">Outer / Hoodie: Rp 549.000 — Rp 699.000</div>
+        </div>
+
+        <div style="flex:1;min-width:260px">
+          <h4>FAQ Singkat</h4>
+          <div class="faq">
+            <div class="faq-item"><strong>Berapa lama proses produksi?</strong><div style="color:var(--muted)">Biasanya 3–7 hari kerja untuk stok, 10–21 hari untuk pre‑order/limited.</div></div>
+            <div class="faq-item"><strong>Apa ada pengembalian?</strong><div style="color:var(--muted)">Kami menerima komplain kualitas; kebijakan refund untuk kasus tertentu.</div></div>
+            <div class="faq-item"><strong>Apakah ukuran tersedia besar?</strong><div style="color:var(--muted)">Ukuran S–XXL tersedia; cek tabel size saat melihat produk.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Collection Story -->
+    <section id="story" class="story wrap">
+      <h2>THE STORY HAS NOT ENDED.</h2>
+      <div class="page" role="article" aria-label="Collection story">
+        <div class="decor">CHAPTER I — <span style="margin-left:0.6rem;color:var(--muted)">An archive of forgotten symbols, coordinates: 39°12'N 12°27'E</span></div>
+        <p style="margin-top:1rem;color:var(--muted)">CHRONICLE bukan sekadar pakaian. Ia adalah arsip simbol yang terlupakan, peradaban yang pudar, dan kisah yang menolak hilang. Halaman demi halaman, potongan kami muncul seperti artefak yang menunggu pembaca yang berani.</p>
+      </div>
+    </section>
+
+    <!-- Immersive Quote -->
+    <section class="quote-full" aria-hidden="false">
+      <h2>“BEBERAPA CERITA TIDAK DIMAKSUDKAN UNTUK DIINGAT. MEREKA DIMAKSUDKAN UNTUK DIPAKAI.”</h2>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about wrap">
+      <div>
+        <h2>CHRONICLE</h2>
+        <p style="color:var(--muted)">Dibuat untuk mereka yang menemukan keindahan pada yang tak dikenal. CHRONICLE memadukan kegelapan budaya jalanan modern dengan bahasa abadi mitologi, seni, dan dunia yang terlupakan.</p>
+      </div>
+      <div style="background-image:url('assets/chronicle-marble-2.svg');background-size:cover;border-radius:12px;min-height:140px;opacity:0.9;border:1px solid rgba(255,255,255,0.03)"></div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="wrap" style="padding:2rem 0">
+      <h3>ENTER THE CHRONICLE</h3>
+      <p style="color:var(--muted)">Receive stories from the unknown.</p>
+      <form onsubmit="event.preventDefault();alert('Terima kasih — Anda telah bergabung ke Chronicle.'); this.reset();" style="display:flex;gap:0.6rem;margin-top:0.8rem;flex-wrap:wrap">
+        <input aria-label="Email" type="email" placeholder="Email address" required style="padding:0.8rem 1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+        <button class="btn-primary" style="padding:0.8rem 1rem;border-radius:10px">JOIN THE CHRONICLE</button>
+      </form>
+    </section>
+
+    <!-- Contact / Footer -->
+    <footer class="wrap" id="contact">
+      <div class="footer-grid">
+        <div>
+          <div class="brand">CHRONICLE</div>
+          <div style="color:var(--muted);margin-top:0.6rem">© 2026 CHRONICLE. ALL RIGHTS RESERVED.<br>CHAPTER I — THE BEGINNING</div>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">Pinterest</a>
+          <a href="#contact">Contact</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+        <div style="min-width:240px">
+          <form onsubmit="event.preventDefault();alert('Pesan terkirim. Kami akan menghubungi Anda.');this.reset();">
+            <label style="font-weight:700;display:block;margin-bottom:0.4rem">Kontak cepat</label>
+            <input type="text" placeholder="Nama" required style="width:100%;padding:0.6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);margin-bottom:0.5rem">
+            <input type="email" placeholder="Email" required style="width:100%;padding:0.6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);margin-bottom:0.5rem">
+            <button class="btn-primary" style="width:100%;padding:0.6rem;border-radius:8px">Kirim Pesan</button>
+          </form>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Modal preview & cart minimal -->
+  <div id="modal" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,0.6);z-index:120">
+    <div style="width:min(900px,92%);background:var(--surface);padding:1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03);position:relative">
+      <button onclick="closeModal()" style="position:absolute;right:12px;top:12px;background:transparent;border:none;color:var(--text);font-size:1.1rem">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Minimal todo update: mark steps done
+    fetch && console.debug('CHRONICLE page loaded');
+
+    // Sticky navbar on scroll
+    const navbar = document.querySelector('.navbar');
+    const heroSection = document.querySelector('.hero');
+    let lastScroll = 0;
+    function onScroll(){
+      const sc = window.scrollY;
+      if(sc > 60) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled');
+      lastScroll = sc;
+    }
+    document.addEventListener('scroll', onScroll, {passive:true});
+
+    // Particles: create subtle floating particles
+    const particlesEl = document.querySelector('.particles');
+    for(let i=0;i<60;i++){
+      const p = document.createElement('span');
+      p.className='particle';
+      p.style.left=Math.random()*100+'%';
+      p.style.top=Math.random()*100+'%';
+      p.style.opacity=(0.03+Math.random()*0.2);
+      p.style.transform='translate3d(0,0,0)';
+      p.style.width=(1+Math.random()*2)+'px';
+      p.style.height=p.style.width;
+      particlesEl.appendChild(p);
+    }
+
+    // Simple scroll reveal with IntersectionObserver
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!prefersReduced){
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.style.opacity=1;
+            e.target.style.transform='none';
+            observer.unobserve(e.target);
+          }
+        });
+      },{threshold:0.12});
+
+      document.querySelectorAll('.card, .intro-art, .page, .quote-full, .feature-item, .price-card').forEach(el=>{
+        el.style.opacity=0;el.style.transform='translateY(14px)';observer.observe(el);
+      });
+    }
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuToggle');
+    menuBtn && menuBtn.addEventListener('click',()=>{
+      const expanded = menuBtn.getAttribute('aria-expanded')==='true';
+      menuBtn.setAttribute('aria-expanded', (!expanded).toString());
+      const mainNav = document.querySelector('nav.main');
+      if(mainNav.style.display==='flex'){mainNav.style.display='none';}else{mainNav.style.display='flex';mainNav.style.flexDirection='column';mainNav.style.position='fixed';mainNav.style.right='12px';mainNav.style.top='60px';mainNav.style.background='linear-gradient(180deg, rgba(8,8,8,0.98), rgba(8,8,8,0.95))';mainNav.style.padding='1rem';mainNav.style.borderRadius='12px'}
+    });
+
+    // Product preview modal
+    const modal = document.getElementById('modal');
+    function openPreview(id){
+      const data = {
+        1:{title:'The Relic Tee',img:'assets/chronicle-collage.jpg',desc:'Oversized black T‑shirt with heavy cotton and neoclassical engraving.',price:'Rp 399.000',pos:'16% 25%'},
+        2:{title:'The Arcane Pendant',img:'assets/chronicle-collage.jpg',desc:'Antique silver pendant with arcane geometry.',price:'Rp 579.000',pos:'50% 25%'},
+        3:{title:'The Eternal Ring',img:'assets/chronicle-collage.jpg',desc:'Antique silver ring with onyx inlay.',price:'Rp 349.000',pos:'83% 25%'},
+        4:{title:'The Fallen Trousers',img:'assets/chronicle-collage.jpg',desc:'Wide‑leg trousers in charcoal with subtle embroidery.',price:'Rp 549.000',pos:'50% 75%'},
+        5:{title:'The Obscura Hoodie',img:'assets/chronicle-collage.jpg',desc:'Oversized hoodie with large back engraving.',price:'Rp 699.000',pos:'83% 75%'}
+      };
+      const item=data[id];
+      document.getElementById('modalContent').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:center">
+        <div style="background-image:url('${item.img}');background-size:cover;background-position:${item.pos || '50% 50%'};width:100%;height:320px;border-radius:8px"></div>
+        <div><h3 style="font-family:${'Playfair Display'+' ,serif'}">${item.title}</h3><p style="color:var(--muted)">${item.desc}</p><div style="margin-top:1rem;font-weight:700">${item.price}</div><div style="margin-top:1rem"><button class='btn-primary' style='padding:0.6rem 1rem' onclick='addToCart(${id});closeModal()'>Add to cart</button></div></div>
+      </div>`;
+      modal.style.display='grid';
+    }
+    function closeModal(){modal.style.display='none';}
+
+    // Simple cart
+    const cart = [];
+    function addToCart(id){
+      cart.push(id);
+      const cartBtn = document.querySelector('.fa-bag-shopping') || document.querySelector('.icon-btn[aria-label="Cart"] i');
+      // small feedback
+      alert('Item ditambahkan ke cart. Total items: '+cart.length);
+    }
+
+    // Keyboard accessibility
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',function(e){
+        const href=this.getAttribute('href'); if(href==='#')return;
+        const el=document.querySelector(href);
+        if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});} 
+      });
+    });
+
+  </script>
+</body>
+</html>

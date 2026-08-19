@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+</head>
+
+<body>
+
+    <h1>Course Sign Up Page</h1>
+    <form>  
+       <p>Please Note: First Name, Last Name, and Email are required </p>
+       <label> First Name:</label><input type="text" name="first_name" value="First Name" required style="color: grey">
+       <label> Last Name:</label><input type="text" name="last_name" value="Last Name" required style="color: grey">
+       <label> Email:</label><input type="email" name="email" value="Email" required style="color: grey">
+       <label> Password:</label><input type="password" name="password" required>
+       
+       <p> Are you over the age of 18?</p>
+       <input type="radio" name="age" value="yes" required> Yes:
+       <input type="radio" name="age" value="no" required> No:
+      
+       <p> Are you have a Credit Card or PayPal?</p>
+       <select name="payment" required>
+        <option value="credit_card">Credit Card</option>
+        <option value="paypal">PayPal</option>
+       </select>
+       <input type="submit" value="Submit Feedback"><br><br>
+
+       <a href="https://www.google.com" style="color: purple;">Back</a>
+       <a href="https://www.youtube.com/">Next</a>
+
+    </form>
+        <script>
+        (function(){
+            const fields = [
+                {name: 'first_name', placeholder: 'First Name'},
+                {name: 'last_name', placeholder: 'Last Name'},
+                {name: 'email', placeholder: 'Email'}
+            ];
+            fields.forEach(f => {
+                const el = document.querySelector('input[name="' + f.name + '"]');
+                if(!el) return;
+                // set initial color depending on value
+                el.style.color = (el.value === f.placeholder) ? 'grey' : '';
+                el.addEventListener('focus', function(){
+                    if(this.value === f.placeholder){
+                        this.value = '';
+                        this.style.color = 'black';
+                    }
+                });
+                el.addEventListener('blur', function(){
+                    if(this.value.trim() === ''){
+                        this.value = f.placeholder;
+                        this.style.color = 'grey';
+                    }
+                });
+            });
+        })();
+        </script>
+</body>
+</html>

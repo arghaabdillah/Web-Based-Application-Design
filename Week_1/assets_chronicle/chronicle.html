@@ -1,0 +1,666 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chronicle | Neoclassic Dark Fantasy</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050505;
+      --bg-soft: #111111;
+      --card: #171717;
+      --border: rgba(255,255,255,0.08);
+      --text: #f3f3f3;
+      --muted: #b0b0b0;
+      --accent: #c72f2f;
+      --accent-soft: rgba(199, 47, 47, 0.18);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, rgba(199,47,47,0.12), transparent 18%), linear-gradient(180deg, #101010 0%, #050505 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand {
+      font-size: 1rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem 1.7rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #8a1e1e);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(199,47,47,0.25);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2.5rem;
+      align-items: center;
+      margin-bottom: 3.2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 4vw, 4.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 40rem;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      font-size: 1rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero-meta span {
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+
+    .hero-visual {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(199,47,47,0.12), transparent 35%);
+      pointer-events: none;
+    }
+
+    .hero-card h2 {
+      margin-bottom: 0.85rem;
+      font-size: 1.35rem;
+    }
+
+    .hero-card p {
+      color: var(--muted);
+    }
+
+    .hero-tag {
+      margin-top: 1.4rem;
+      display: inline-flex;
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .section-title {
+      margin-bottom: 2rem;
+    }
+
+    .section-title h2 {
+      font-size: 2rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      max-width: 44rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(199,47,47,0.35);
+    }
+
+    .product-image {
+      min-height: 240px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,0.35);
+      font-size: 1.05rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .product-card-content {
+      padding: 1.75rem;
+    }
+
+    .product-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .product-card p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 0.96rem;
+    }
+
+    .product-tag {
+      display: inline-flex;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color: var(--accent);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      transition: transform 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      width: 3.4rem;
+      height: 3.4rem;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(199,47,47,0.16);
+      color: var(--accent);
+      font-size: 1.35rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 0.85rem;
+      font-size: 1.15rem;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .testimonial-card,
+    .faq-card,
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+    }
+
+    .testimonial-card p,
+    .faq-card p {
+      color: var(--muted);
+      margin-top: 1rem;
+      font-size: 0.98rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.6rem;
+    }
+
+    .avatar {
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(199,47,47,0.35), rgba(255,255,255,0.05));
+      color: #fff;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .pricing-card h3 {
+      margin-bottom: 0.9rem;
+      font-size: 1.3rem;
+    }
+
+    .price {
+      font-size: 2.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .price span {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .pricing-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.5rem;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .pricing-card li {
+      color: var(--muted);
+      padding-left: 1.1rem;
+      position: relative;
+    }
+
+    .pricing-card li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      padding: 1.5rem;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+    }
+
+    .faq-question {
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .footer-group {
+      max-width: 36rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .grid-2,
+      .pricing-grid,
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 1rem 0 2rem;
+      }
+
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+
+      .hero-card,
+      .feature-card,
+      .testimonial-card,
+      .faq-card,
+      .pricing-card,
+      .faq-item {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="brand">Chronicle</div>
+      <nav aria-label="Navigasi utama">
+        <a href="#fitur">Fitur</a>
+        <a href="#harga">Harga</a>
+        <a href="#faq">FAQ</a>
+        <a href="#footer">Kontak</a>
+      </nav>
+      <a href="#harga" class="btn-primary">Beli Sekarang</a>
+    </header>
+
+    <section class="hero" id="hero">
+      <div>
+        <p style="color: var(--accent); text-transform: uppercase; letter-spacing: 0.35em; font-weight:700; margin-bottom:1rem;">Dark dreamwear</p>
+        <h1>Chronicle: Gaya neoclassic gelap untuk jiwa muda yang berani.</h1>
+        <p>Jelajahi koleksi t-shirt, jaket, kalung, dan cincin dengan nuansa hitam putih dan aksen merah. Desain kami menangkap sisi misterius sekaligus modern untuk outfit sehari-hari.</p>
+        <a href="#harga" class="btn-primary">Lihat Koleksi</a>
+        <div class="hero-meta">
+          <span>Untuk umur 15-30 tahun</span>
+          <span>Atmosfer dark fantasy</span>
+          <span>Limited edition</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h2>Jaket Nightfall</h2>
+          <p>Potongan oversized dengan detail bordir klasik, cocok untuk hangout dan acara malam. Nyaman dipakai, tetap tampil tegas.</p>
+          <div class="hero-tag">Pilihan utama</div>
+        </div>
+        <div class="hero-card">
+          <h2>Aksesori Sigil</h2>
+          <p>Kalung obsidian dan cincin motif sigil memberikan sentuhan akhir yang dramatis tanpa kehilangan kesan elegan.</p>
+          <div class="hero-tag">Koleksi baru</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fitur">
+      <div class="section-title">
+        <h2>Fitur Unggulan</h2>
+        <p>Chronicle menggabungkan estetika neo klasik dengan spirit dark fantasy, membuat setiap produk terasa powerhouse fashion yang pas untuk remaja modern.</p>
+      </div>
+      <div class="features">
+        <article class="feature-card">
+          <div class="feature-icon">🏛️</div>
+          <h3>Desain Neoclassic</h3>
+          <p>Detal motif pilar, ornamen klasik, dan potongan yang rapi memberi kesan elegan dan berkelas.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🌑</div>
+          <h3>Nuansa Dark Fantasy</h3>
+          <p>Hitam, merah, dan abu menciptakan visual dramatis yang cocok untuk tampilan edgy dan penuh cerita.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Energi Remaja</h3>
+          <p>Setiap koleksi dirancang untuk generasi 15-30 tahun yang ingin tampil beda dan percaya diri.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="produk">
+      <div class="section-title">
+        <h2>Contoh Produk Chronicle</h2>
+        <p>Lihat contoh barang yang membawa tema neoclassic dark fantasy ke dalam tampilan harian kamu.</p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-image">Jaket Nightfall</div>
+          <div class="product-card-content">
+            <h3>Jaket Nightfall</h3>
+            <p>Jaket hitam with bordir klasik dan bahan tebal yang tetap terasa ringan. Detail merah di kerah memberi sentuhan dramatis.</p>
+            <div class="product-tag">Outerwear</div>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">Kaos Sigil</div>
+          <div class="product-card-content">
+            <h3>Kaos Sigil</h3>
+            <p>Kaos putih dan hitam dengan simbol neo klasik di dada. Cocok dipadukan dengan celana gelap dan lapisan jaket.</p>
+            <div class="product-tag">T-Shirt</div>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">Kalung Obsidian</div>
+          <div class="product-card-content">
+            <h3>Kalung Obsidian</h3>
+            <p>Kalung batu hitam dengan ukiran kecil merah. Aksesori elegan yang terasa mistis dan pas untuk outfit malam.</p>
+            <div class="product-tag">Aksesori</div>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">Cincin Sigil</div>
+          <div class="product-card-content">
+            <h3>Cincin Sigil</h3>
+            <p>Cincin perak gelap dengan motif simbolik. Tambahan sempurna untuk tampilan gothic dan modern.</p>
+            <div class="product-tag">Aksesori</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="testimonial-card">
+        <div class="section-title">
+          <h2>Testimoni Pelanggan</h2>
+        </div>
+        <p>"Aku suka bagaimana Chronicle memberikan kesan kuat tanpa terlihat berlebihan. Aksesori dan pakaian mereka jadi andalan aku setiap kali mau tampil beda."</p>
+        <div class="testimonial-author">
+          <div class="avatar">MZ</div>
+          <div>
+            <strong>Melati, 22</strong>
+            <div style="color: var(--muted); font-size:0.95rem;">Fashion enthusiast</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p>"Jaketnya nyaman banget dipakai, dan desainnya berhasil bikin outfitku makin keren. Warna merah kecil di detail membuat tampilannya istimewa."</p>
+        <div class="testimonial-author">
+          <div class="avatar">AR</div>
+          <div>
+            <strong>Adri, 26</strong>
+            <div style="color: var(--muted); font-size:0.95rem;">Streetwear lover</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="harga">
+      <div class="section-title">
+        <h2>Daftar Harga</h2>
+        <p>Pilih paket yang sesuai dengan mood dan kebutuhan kamu. Semua harga sudah termasuk desain premium dan layanan eksklusif.</p>
+      </div>
+      <div class="pricing-grid">
+        <article class="pricing-card">
+          <h3>Essential</h3>
+          <div class="price">Rp 249.000<span>/ item</span></div>
+          <ul>
+            <li>Kaos neoclassic</li>
+            <li>Warna hitam atau putih</li>
+            <li>Pengiriman standar</li>
+          </ul>
+          <a href="#footer" class="btn-primary">Pesan Sekarang</a>
+        </article>
+        <article class="pricing-card">
+          <h3>Aksesori</h3>
+          <div class="price">Rp 389.000<span>/ set</span></div>
+          <ul>
+            <li>Kalung obsidian</li>
+            <li>Cincin sigil</li>
+            <li>Packing eksklusif</li>
+          </ul>
+          <a href="#footer" class="btn-primary">Beli Paket</a>
+        </article>
+        <article class="pricing-card">
+          <h3>Premium Set</h3>
+          <div class="price">Rp 699.000<span>/ set</span></div>
+          <ul>
+            <li>Jaket + kaos + aksesori</li>
+            <li>Limited edition</li>
+            <li>Gift spesial</li>
+          </ul>
+          <a href="#footer" class="btn-primary">Checkout</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-title">
+        <h2>FAQ Singkat</h2>
+        <p>Pertanyaan umum yang sering diajukan tentang koleksi Chronicle dan proses pemesanan.</p>
+      </div>
+      <div class="faq-list">
+        <article class="faq-item">
+          <div class="faq-question">Apakah produknya nyaman dipakai sehari-hari?</div>
+          <p>Ya, bahan kami dipilih untuk kenyamanan dengan tetap mempertahankan tampilan tegas dan tekstur premium.</p>
+        </article>
+        <article class="faq-item">
+          <div class="faq-question">Apakah ukuran tersedia untuk semua pinggang?</div>
+          <p>Kami menyediakan ukuran S, M, L, XL, dan XXL untuk pakaian. Aksesori bisa disesuaikan agar pas di tangan kamu.</p>
+        </article>
+        <article class="faq-item">
+          <div class="faq-question">Bagaimana cara memesan?</div>
+          <p>Silakan hubungi email atau kontak di bagian footer, dan sertakan kode paket atau jenis produk yang kamu inginkan.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer id="footer">
+      <div class="footer-group">
+        <div class="brand">Chronicle</div>
+        <p style="margin-top:0.8rem; color: var(--muted);">Chronicle hadir sebagai brand fashion dengan aura gelap dan detail elegan, cocok untuk remaja yang ingin tampil berbeda dan berani.</p>
+      </div>
+      <div class="footer-group footer-links">
+        <a href="#hero">Home</a>
+        <a href="#fitur">Fitur</a>
+        <a href="#harga">Harga</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-group">
+        <p>Kontak: chronicle.darkbrand@email.com</p>
+        <p>Instagram: @chronicle.dark</p>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

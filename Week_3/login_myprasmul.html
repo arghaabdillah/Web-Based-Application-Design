@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 100px;
+        }
+        .top-block {
+            text-align: left;
+        }
+        .bottom-block {
+            text-align: center;
+        }
+        .forgot-password {
+            text-align: right;
+            margin-left: 200px;
+        }
+        .checkbox {
+            text-align: left;
+            margin-left: 80px;
+            width: 300px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            margin-top: 10px;
+            border-radius: 10px;
+            border: none;
+            padding: 10px 140px;
+            background-color: blue;
+            color: white;
+
+        }
+        input[type="email"], input[type="password"] {
+            width: 300px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        label [for="not_robot"] {
+            border: 1px solid #000000;
+        }
+    </style>
+        <div class="top-block">
+        <h1>Welcome</h1>
+        <p>Please enter your login credentials</p>
+        <label for="email">Email</label><br>
+        <input type="email" id="email" name="email" value="Email" required style="color: grey">
+        <br><br>
+        <label for="password">Password</label><br>
+        <input type="password" id="password" name="password" required style="color: grey"><br><br>
+        </div>
+        <div class="forgot-password">
+        <a href="https://www.google.com" style="color: blue;">Forgot Password?</a>
+        </div>
+        <br><br>
+        <div class="bottom-block">
+        <div class="checkbox">
+        <input type="checkbox" id="not_robot" name="not_robot" required>
+        <label for="not_robot" >I'm not a robot</label><br><br></div>
+        <button type="submit">Sign in</button><br>
+
+        <p>Don't have an account? <a href="https://www.google.com">Sign up</a></p>
+        <p style="color:rgb(75, 73, 73)">Please use <strong style="color: black;">Google Chrome</strong> or <strong style="color: black;">Mozilla Firefox</strong> for best experience.</p>
+        </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="100%" height="100%" fill="#070707"/>
+  <g transform="translate(200,200)" fill="none" stroke="#a8a8a0" stroke-width="6">
+    <circle r="80"/>
+    <circle r="28"/>
+    <path d="M-40 -40 L0 -80 L40 -40"/>
+  </g>
+  <text x="50%" y="92%" fill="#a8a8a0" font-family="Inter, sans-serif" font-size="14" text-anchor="middle">Arcane Pendant</text>
+</svg>

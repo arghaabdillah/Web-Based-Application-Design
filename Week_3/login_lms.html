@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("bg_login_mdl.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            width: min(915px, calc(100% - 32px));
+            min-height: 430px;
+            padding: 34px 48px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        .container-kiri,
+        .container-kanan {
+            flex: 1;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .container-kanan {
+            min-height: 365px;
+            padding-left: 32px;
+            border-left: 1px solid #d9d9d9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container-kanan a {
+            color: grey;
+            margin-bottom: 8px;
+        }
+        .container img {
+            width: min(400px, 100%);
+            height: auto;
+            display: block;
+            margin: -15px -5px 10px auto;
+            margin-left: 0;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #989898;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .login-form p {
+            margin: 18px 0 0;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .container-kanan p {
+            margin: 0 0 36px;
+        }
+        @media (max-width: 700px) {
+            body {
+                padding: 16px 0;
+            }
+            .container {
+                width: calc(100% - 32px);
+                min-height: auto;
+                padding: 28px 24px;
+                flex-direction: column;
+                gap: 28px;
+            }
+            .container-kiri,
+            .container-kanan {
+                width: 100%;
+            }
+            .container-kanan {
+                min-height: auto;
+                padding: 28px 0 0;
+                border-left: 0;
+                border-top: 1px solid #d9d9d9;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="container-kiri">
+            <img src="logo_upm_biru%20(1).png" alt="Logo UPM">
+            <form class="login-form">
+                <input type="email" placeholder="Username or Email" required>
+                <input type="password" placeholder="Enter your password" required>
+                <br>
+                <div class="login">
+                    <button type="submit">Login</button>
+                </div>
+                <p class="forgot-password"><a href="#" style="color: grey">Lost Password?</a></p>
+            </form>
+        </div>
+        <div class="container-kanan">
+            <p>This site best viewed in Google Chrome.</p>
+            <a href="https://www.google.com/chrome/" target="_blank" style="color: grey;">?Cookies notice</a>
+        </div>
+    </div>      
+</body>
+</html>
